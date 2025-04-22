@@ -1,4 +1,4 @@
-# Code used to implment and test the perspective transform
+# Code used to implement and test the perspective transform
 
 In this section I will be explaining the code used to find and test the perspective transform.
 

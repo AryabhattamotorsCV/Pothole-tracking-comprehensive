@@ -2,7 +2,6 @@ site_name: Pothole tracking aryabhatta motors
 theme:
   name: material
   features:
-    - navigation.tabs
     - navigation.sections
     - toc.integrate
     - navigation.top

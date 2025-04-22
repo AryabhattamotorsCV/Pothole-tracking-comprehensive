@@ -1,187 +1,32 @@
-# Scripts used in the project
+# Code used to export the model in different versions
 
-Below I will be listing all the code one by one with explaination written for the testing of the system in a lab environment.
-Keep in mind the titles are the file name of the scripts.
+Below i will be listing the code used in the project to export the model in different formats, when we train a yolo model we get it in a `.pt` format which is a native pytorch format of the model.
 
-## Code to run the model using the native yolo library
+## Code used to export the model to onnx
 
-``` py linenums="1" title="yolo_object_detection_YOLOLIB.py"
-import cv2
-from ultralytics import YOLO
-import torch
-import time
-
-# Set CUDA device
-torch.cuda.set_device(0)
-
-# Load the YOLOv8 model
-model = YOLO(r"D:\Arybhatta_motors_computer_vision\Yolov8_custom\scripts\models\yolov11l_best.pt")
-
-# Run detection on an image once (optional, just testing)
-image_path = r"D:\Arybhatta_motors_computer_vision\Yolov8_custom\scripts\videos_images\istockphoto-174662203-612x612.jpg"
-image_results = model(image_path)
-
-# Video path
-video_path = r"D:\Arybhatta_motors_computer_vision\Yolov8_custom\scripts\videos_images\WhatsApp Video 2024-07-05 at 01.41.50_72d4a5c5.mp4"
-cap = cv2.VideoCapture(video_path)
-
-arr = []  # to store inference times
-
-# Loop through the video frames
-while cap.isOpened():
-    success, frame = cap.read()
-    if not success or frame is None:
-        break
-
-    # Resize frame if needed
-    frame = cv2.resize(frame, (640, 640))
-
-    # Run YOLOv8 detection
-    start_time = time.time()
-    results = model(frame)
-    end_time = time.time()
-
-    # FPS calculation
-    inference_time = end_time - start_time
-    arr.append(inference_time)
-    FPS = str(int(1 / inference_time)) if inference_time > 0 else "0"
-
-    # Plot results
-    annotated_frame = results[0].plot()
-
-    # Optional: Print box coordinates
-    for box in results[0].boxes:
-        x1, y1, x2, y2 = box.xyxy[0]
-        print("Box coordinates:", x1.item(), y1.item(), x2.item(), y2.item())
-
-    # Draw FPS on frame
-    cv2.putText(annotated_frame, f"FPS = {FPS}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (178, 255, 102), 2)
-    cv2.imshow("YOLOv8 Detection", annotated_frame)
-
-    # Break on 'q'
-    if cv2.waitKey(1) & 0xFF == ord("q"):
-        break
-
-# Release everything
-cap.release()
-cv2.destroyAllWindows()
-
-# Print average inference time
-print("Average inference time per frame:", sum(arr) / len(arr))
-```
-## Code to run the yolo model in opencv using the dnn module
-
-``` py linenums="1" title="yolo_object_detection_OPENCV.py"
-import cv2
-import numpy as np
-
-# Load the ONNX model
-net = cv2.dnn.readNet(r"D:\Aryabhatta_computer_vision\Yolov8_custom\scripts\models\saved_model.pb")
-
-# Specify target device (CPU or GPU)
-net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
-
-# Initialize video capture object
-cap = cv2.VideoCapture(r"E:\Aryabhatta_motors_computer_vision\scripts\videos\WhatsApp Video 2024-07-05 at 01.41.49_9b652ede.mp4")
-
-
-if not cap.isOpened():
-    print("Error: Could not open video.")
-
-while cap.isOpened():
-    ret, frame = cap.read()
-    if not ret:
-        break
-    
-    # Prepare input image (resize if necessary)
-    frame_resized = cv2.resize(frame, (640, 640))
-    blob = cv2.dnn.blobFromImage(frame, 1.0, (640, 640), (0, 0, 0), swapRB=True, crop=False)
-    net.setInput(blob)
-    
-    # Perform inference and get output
-    outs = net.forward()
-
-    # Post-process the output (typically, YOLOv3 or similar models)
-    for out in outs:
-        for detection in out:
-            scores = detection[5:]
-            class_id = np.argmax(scores)
-            confidence = scores[class_id]
-            if confidence > 0.99:
-                # Calculate bounding box coordinates
-                center_x = int(detection[0] * frame.shape[1])
-                center_y = int(detection[1] * frame.shape[0])
-                width = int(detection[2] * frame.shape[1])
-                height = int(detection[3] * frame.shape[0])
-                left = int(center_x - width / 2)
-                top = int(center_y - height / 2)
-                
-                # Draw bounding box
-                cv2.rectangle(frame, (left, top), (left + width, top + height), (0, 255, 0), 2)
-                
-                # Print bounding box coordinates
-                print(f"Bounding box coordinates: (left={left}, top={top}, right={left+width}, bottom={top+height})")
-    
-    # Display the frame
-    cv2.imshow('Frame', frame)
-    
-    # Exit on pressing 'q'
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-# Release resources
-cap.release()
-cv2.destroyAllWindows()
-```
-## Code to run the onnx format of the model
-
-``` py linenums="1" title="yolo_object_detection_onnx.py"
-import cv2
-
+``` py title="onnx_converter.py" linenums="1"
 from ultralytics import YOLO
 
-import torch
+# Load a model
+model = YOLO(r"yolov8n.pt")  # load an official model
+model = YOLO(r"E:\Aryabhatta_motors_computer_vision\scripts\models\best.pt")  # load a custom trained model
 
-# torch.cuda.set_device(0)
-
-# Load the YOLOv8 model
-model = YOLO(r"E:\Aryabhatta_motors_computer_vision\scripts\models\best.onnx")
-# print("before: ",model.device.type)
-# results = model(r"E:\Aryabhatta_motors_computer_vision\images_potholes_1\dataset-pothole\yolov8_custom\train\images\01_jpg.rf.3ca97922642224c05e3602b324e899f2.jpg")
-# Open the video file
-# print("after: ",model.device.type)
-video_path = r"E:\Aryabhatta_motors_computer_vision\scripts\videos\WhatsApp Video 2024-07-05 at 01.41.50_72d4a5c5 (online-video-cutter.com).mp4"
-cap = cv2.VideoCapture(video_path)
-
-# Loop through the video frames
-while cap.isOpened():
-    # Read a frame from the video
-    success, frame = cap.read()
-
-   
-    if success:
-        # Run YOLOv8 tracking on the frame, persisting tracks between frames
-        results = model.track(frame, persist=True)
-        for result in results:
-            boxes = result.boxes
-            for box in boxes:
-                x1, y1, x2, y2 = box.xyxy[0]  # Get coordinates in format [x1, y1, x2, y2]
-                print("Box coordinates:", x1, y1, x2, y2)
-        # Visualize the results on the frame
-        annotated_frame = results[0].plot()
-        print(annotated_frame)
-        # Display the annotated frame
-        cv2.imshow("YOLOv8 Tracking", annotated_frame)
-
-        # Break the loop if 'q' is pressed
-        if cv2.waitKey(1) & 0xFF == ord("q"):
-            break
-    else:
-        # Break the loop if the end of the video is reached
-        break
-
-# Release the video capture object and close the display window
-cap.release()
-cv2.destroyAllWindows()
+# Export the model
+model.export(format="onnx")
 ```
+
+This code uses the native yolo library called ultralytics to export the yolo model into onnx.
+
+## Code used to export the yolo model to openvino
+
+```py title="yolo_openvino_export.py" linenums="1"
+
+from ultralytics import YOLO  # For YOLOv5 and YOLOv8
+
+model = YOLO(r"D:\Aryabhatta_computer_vision\Yolov8_custom\scripts\models\best(1).pt")
+
+model.export(format="openvino")
+
+```
+
+The above code is used to export the yolo model into the openvino format which is a quantised version of the model.

@@ -1,4 +1,4 @@
-# Scripts used in the project for testing the different versions of the model
+# Scripts used in the project to test different versions of the model
 Below I will be listing all the code one by one with explaination written for the testing of the system in a lab environment.
 Keep in mind the titles are the file name of the scripts.
 

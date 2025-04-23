@@ -84,8 +84,8 @@ while cam.isOpened():
                 print(f"Motor 2 angle = {motor2_angle} Motor 1 angle = {motor1_angle}")
                 print(f'Horizontal distance in cm is {x_coordinate},Vertical distance in cm is {y_coordinate}')
                 print("right quadrant")
-                # rotate_servo(motor2_pin, motor2_angle)
-                # rotate_servo(motor1_pin, motor1_angle)
+                rotate_servo(motor2_pin, motor2_angle)
+                rotate_servo(motor1_pin, motor1_angle)
             if x_coordinate_trfm < 0:
                 print(x_coordinate_trfm)
                 motor2_angle = servo_motor2_angle_degrees
@@ -93,9 +93,23 @@ while cam.isOpened():
                 print(f"Motor 2 angle = {motor2_angle} Motor 1 angle = {motor1_angle}")
                 print(f'Horizontal distance in cm is {x_coordinate},Vertical distance in cm is {y_coordinate}')
                 print("left quadrant")
-                # rotate_servo(motor2_pin, motor2_angle)
-                # rotate_servo(motor1_pin, motor1_angle)
-        # cv2.imwrite("test_image.jpg",image_resized)
+                rotate_servo(motor2_pin, motor2_angle)
+                rotate_servo(motor1_pin, motor1_angle)
+            if (x_center > 300 and x_center < 420) and (y_center > 200 and y_center < 320):
+                continue
+            if x_center < 320:
+                angle = angle - 1
+                rotate_servo(pin, angle)
+            if x_center > 320:
+                angle = angle + 1
+                rotate_servo(pin, angle)
+            if y_center < 240:
+                angle1 = angle1 - 1
+                rotate_servo(pin1, angle1)  
+            if y_center > 240:
+                angle1 = angle1 + 1
+                rotate_servo(pin1, angle1)        
+        cv2.imwrite("test_image.jpg",image_resized)
         cv2.imshow("yolov8_testing" , result_0)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):

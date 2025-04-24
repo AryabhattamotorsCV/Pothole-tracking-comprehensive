@@ -1,4 +1,4 @@
-# Code used to export the model in different versions
+# Code used to export the model into different formats
 
 Below i will be listing the code used in the project to export the model in different formats, when we train a yolo model we get it in a `.pt` format which is a native pytorch format of the model.
 

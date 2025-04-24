@@ -30,3 +30,17 @@ model.export(format="openvino")
 ```
 
 The above code is used to export the yolo model into the openvino format which is a quantised version of the model.
+
+## Code used to export the model in tensorrt format
+
+Tensorrt is an optimization library, it can be used to increase the inference speed, there are a few other reason why it is helpful but I will not dive into them here.
+
+```py title="yolov8_tensorrt.py" linenums="1"
+
+from ultralytics import YOLO
+
+model = YOLO(r"D:\Aryabhatta\Yolov8_custom\scripts\models\best.pt")
+model.export(
+    format="engine")
+```
+

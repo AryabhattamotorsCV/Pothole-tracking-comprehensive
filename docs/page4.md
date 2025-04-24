@@ -305,4 +305,128 @@ while cam.isOpened():
 cap.release()
 cv2.destroyAllWindows()   
 ```
-The above code applies certain mathematical techniques to calulate the coordinates of the servo motor in angle, this is also knows as inverse kinematics.
+The above code applies certain mathematical techniques to calulate the coordinates of the servo motor, this is also knows as inverse kinematics.
+
+
+## PID control system for when the camera is mounted
+
+PID is a control system method which let's us control various features of the motion of the motors, below I have given code to implement the PID system.
+
+```py title="PID_camera_tracking.py" linenums="1"
+
+# Import required libraries
+import cv2
+import numpy as np
+import time
+import serial
+from simple_pid import PID
+from ultralytics import YOLO  # YOLO from Ultralytics
+import torch
+
+# Select the CUDA device (GPU)
+torch.cuda.set_device(0)
+
+# Load YOLOv11n model - replace with your trained model path
+model = YOLO(r"D:\Aryabhatta_computer_vision\Yolov8_custom\scripts\models\best-yolov11n.pt")
+print("before: ", model.device.type)
+
+# Test run on a sample image to ensure the model loads correctly
+results = model(r"E:\Aryabhatta_motors_computer_vision\images_potholes\78778.png")
+print("after: ", model.device.type)
+
+# Setup serial communication with Arduino (adjust COM port accordingly)
+arduino = serial.Serial(port='COM7', baudrate=9600, timeout=1)
+time.sleep(2)  # Give some time to establish the serial connection
+
+# Initialize PID controllers for X and Y servos (horizontal and vertical)
+pid_x = PID(0.02, 0, 0, setpoint=0)
+pid_y = PID(0.02, 0, 0, setpoint=0)
+
+# Set servo angle limits
+pid_x.output_limits = (-45, 45)
+pid_y.output_limits = (-45, 45)
+
+# Deadband (tolerance) in pixels - no correction if within this range
+deadband_x = 10
+deadband_y = 15
+
+# Start video capture (adjust the index based on camera setup)
+cap = cv2.VideoCapture(1)
+
+# Initial angles for the servo motors
+servo_angle_x = 90  # Mid position for horizontal
+servo_angle_y = 40  # Some default vertical position
+
+def send_servo_command(servo, angle):
+    """ Send servo angle command to Arduino over serial """
+    command = f"{servo}:{int(angle)}\n"
+    arduino.write(command.encode())
+    time.sleep(0.02)  # Small delay for serial communication stability
+
+# Send the initial servo position
+send_servo_command("X", servo_angle_x)
+send_servo_command("Y", servo_angle_y)
+
+try:
+    while True:
+        # Read a frame from the camera and horizontally flip it
+        ret, frame = cap.read()
+        frame = cv2.flip(frame, 1)
+        if not ret:
+            break
+
+        # Run tracking with confidence threshold
+        results = model.track(frame, persist=True, conf=0.5)
+
+        # Set box color for annotation
+        color = (255, 248, 150)
+
+        for result in results:
+            boxes = result.boxes
+            for box in boxes:
+                # Extract bounding box coordinates
+                x1, y1, x2, y2 = box.xyxy[0]
+                object_center_x = (x1 + x2) / 2
+                object_center_y = (y1 + y2) / 2
+
+                # Calculate center of the frame
+                frame_center_x = frame.shape[1] // 2
+                frame_center_y = frame.shape[0] // 2
+
+                # Compute X and Y errors from center
+                error_x = object_center_x - frame_center_x
+                error_y = object_center_y - frame_center_y
+
+                # If horizontal error exceeds tolerance, correct with PID
+                if abs(error_x) > deadband_x:
+                    error_x = error_x.cpu().numpy()
+                    correction_x = pid_x(error_x)
+                    servo_angle_x = np.clip(servo_angle_x - correction_x, 0, 180)
+                    print(servo_angle_x)
+                    send_servo_command("X", servo_angle_x)
+
+                # If vertical error exceeds tolerance, correct with PID
+                if abs(error_y) > deadband_y:
+                    error_y = error_y.cpu().numpy()
+                    correction_y = pid_y(error_y)
+                    servo_angle_y = np.clip(servo_angle_y - correction_y, 0, 60)
+                    print(servo_angle_y)
+                    send_servo_command("Y", servo_angle_y)
+
+        # Display the annotated output
+        annotated_frame = results[0].plot()
+        cv2.imshow("Tracking", annotated_frame)
+
+        # Exit on pressing 'q'
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+# On exit, release camera and serial resources
+finally:
+    cap.release()
+    cv2.destroyAllWindows()
+    arduino.close()
+```
+
+The deadband is the zone where if the mechanism is pointing to it will not move further. PID is a system where the goal is to minimize the error and also the way in which this error is reduced, P or proportional is the part of the system which controls the speed at which the error is minimized, I or integral minimizes the error which accumulates over time making the detection of the pothole more accurate. D or derivative stabilizes the motion of the mechanism helps in avoiding overshoots. In our system we need a high P values to match the speed at which the bike will be moving.
+

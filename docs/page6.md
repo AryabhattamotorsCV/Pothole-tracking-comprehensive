@@ -1,4 +1,4 @@
-# Code for different sensor used in testing
+# Code for sensors used in testing
 
 In this section I will be explaining code used to test out different sensors, even though these sensor's work with ARDUINO code, there are ways to make it interact with python code using frameworks like pyserial and pyfirmata.
 
@@ -58,4 +58,3 @@ while True:
 
 Keep in mind even though this method should work on paper it doesn't in real world scenarios, I am just adding this code just in case someone might need it to do a few tests.
 
-```py

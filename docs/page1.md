@@ -1,5 +1,5 @@
 # Scripts used in the project to test different versions of the model
-Below I will be listing all the code one by one with explaination written for the testing of the system in a lab environment.
+From now I will be listing all the code one by one with explaination written for the testing of the system in a lab environment.
 Keep in mind the titles are the file name of the scripts.
 
 ## Code to run the model using the native yolo library
@@ -70,7 +70,7 @@ print("Average inference time per frame:", sum(arr) / len(arr))
 ```
 The above code runs a yolo model regardless of the version and runs inference on the extracted image frame, the extraction of frames from the camera or a videostream is done using opencv. It also calculates inference time for every image, the inverse of this value will give you the fps. 
 
-## Code to run the yolo model using opencv the dnn module
+## Code to run the yolo model using the opencv dnn module
 
 ``` py linenums="1" title="yolo_object_detection_OPENCV.py"
 import cv2

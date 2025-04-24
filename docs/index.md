@@ -50,9 +50,6 @@ The structure of the project is given below
 │   ├───Camera_calibration_images
 │   ├───models
 │   │   └───best(1)_openvino_model
-│   ├───Split
-│   │   ├───Split1
-│   │   └───Split2
 │   ├───yolov8_test
 │   └───__pycache__
 ├───train

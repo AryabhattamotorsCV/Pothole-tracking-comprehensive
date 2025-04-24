@@ -5,7 +5,7 @@ When implementing a system like this, there will be a lot of errors. I will be e
 
 ## Code used to find the index of the camera
 
-When using multiple cameras knowing the index of the camera is important, to know this we run loops and detect the index in which the camera is available.
+When using multiple cameras knowing the index of the camera is important, to know this we run loops and detect the index at which the camera is available.
 
 ```py title="camera_index_finder.py" linenums="1"
 
@@ -105,7 +105,7 @@ cv2.destroyAllWindows()
 
 ## Code to check if the model is readable
 
-When running code in one of the office laptop I faced an issue of model path being read as null, Below I have given code to see if the model path is readable or not.
+When running code in one of the office laptops I faced an issue of model path being read as null, Below I have given code to see if the model path is readable or not.
 
 ```py title="model_path_checker.py" linenums="1"
 

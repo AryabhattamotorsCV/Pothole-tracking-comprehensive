@@ -4,7 +4,7 @@ In this section I will be explaining the code used to find and test the perspect
 
 ## Code used to find the coordinates of the corner of the flat surface
 
-The below code is used to find the corner coordinates of a flat rectangular surface, this is done in order to apply perspective transform properly onto a flat surface when calculating the coordinates of the pothole.
+The below code is used to find the corner coordinates of a flat rectangular surface, this is done in order to apply perspective transform properly onto a flat surface when calculating the coordinates of the pothole. It also has parts which apply perspetive transform but they can be ignored here because this code can also be used to check the perspective transform.
 
 ```py title="Perspective_transform_coord_finder.py" linenums="1"
 import cv2 
@@ -70,7 +70,7 @@ cap.release()
 cv2.destroyAllWindows()
 
 ```
-The above code takes mouse clicks and prints the pixel coordinate of the location of the click, this helps in knowing the pixel coordinates of the corner just by clicking the mouse onto those corners in the camera image.
+The above code takes mouse clicks and prints the pixel coordinate of the location where the click was made, this helps in knowing the pixel coordinates of the corner just by clicking the mouse onto those corners in the camera image.
 
 ## Code used to implement a dynamic perspective transform
 
@@ -132,4 +132,6 @@ while cap.isOpened():
     cv2.destroyAllWindows()
 ```
 
-The above code is used to find a rectangular region defined by black tapes, After that the rectangular region is found using contour detection.
+The above code is used to find a rectangular region defined by black tapes, After that the rectangular region is found using contour detection, there are technical reasons as to why this was done.
+
+##

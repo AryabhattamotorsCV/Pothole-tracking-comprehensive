@@ -1,6 +1,6 @@
 # Code used to implement the math for the system
 
-This section contains the code used to implement the mathematical side of the project. I will not go into the proof's of the mathematics used here since that is covered elsewhere.
+This section contains the code used to implement the mathematical side of the project. I will not go into the proof's of the mathematics used here since that was covered elsewhere.
 
 ## Code used to implement the tangent plane and circle point finder
 

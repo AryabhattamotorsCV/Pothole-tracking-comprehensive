@@ -1,10 +1,10 @@
 # Code used to implement and test the tracking system and mechanism
 
- This section explains the code that was used for the tracking mechanism in a lab environment. Keep in mind there are two ways in which the tracking system is implemented one is to a mount a camera and the other one is to fix a camera and the track.
+ This section explains the code which was used for the tracking mechanism in a lab environment. Keep in mind there are two ways in which the tracking system is implemented one is to a mount a camera and the other one is to fix a camera.
 
 ## Code used in implementing the mounted camera solution
 
-The below code is used to implement the mounted camera method, it used a tensorflow ssd model to run inference.
+The below code is used to implement the mounted camera method, it uses a tensorflow ssd model to run inference.
 
 ```py linenums="1" title="tensorflow_ssd_object_detection_OPENCV.py"
 
@@ -167,7 +167,7 @@ cap.release()
 cv2.destroyAllWindows()
 ```
 
-The above code adjusts the postion of the mechanism based on the centre of the bounding box of the pothole and the centre of the camera, it correct's the position by calculating the error in each step/loop and reduces it in increments, the problem with this code is that the algorithm can make the mechanism overshoot.
+The above code adjusts the postion of the mechanism based on the centre of the bounding box of the pothole and the centre of the camera, it corrects the position by calculating the error in each step/loop and reduces it in increments, the problem with this code is that the algorithm can make the mechanism overshoot.
 
 
 ## Code used to implement the fixed camera solution
@@ -428,5 +428,5 @@ finally:
     arduino.close()
 ```
 
-The deadband is the zone where if the mechanism is pointing to it will not move further. PID is a system where the goal is to minimize the error and also the way in which this error is reduced, P or proportional is the part of the system which controls the speed at which the error is minimized, I or integral minimizes the error which accumulates over time making the detection of the pothole more accurate. D or derivative stabilizes the motion of the mechanism helps in avoiding overshoots. In our system we need a high P values to match the speed at which the bike will be moving.
+The deadband is the zone where if the mechanism is pointing to it will not move further. PID is a system where the goal is to minimize the error and also find a way in which this error is reduced (speed, smoothness, stability etc), P or proportional is the part of the system which controls the speed at which the error is minimized, I or integral minimizes the error which accumulates over time making the detection of the pothole more accurate. D or derivative stabilizes the motion of the mechanism helps in avoiding overshoots. In our system we need a high P value to match the speed at which the bike will be moving.
 

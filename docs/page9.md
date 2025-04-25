@@ -1,6 +1,6 @@
-# Code used to implement visual odometry
+# Code used to implement visual motion tracking.
 
-Visual odometry is a method which let's us track the camera's position relative position to it's previous one, this was important to do since a complete fixed camera solution would need tracking of the camera's position. I was not able to make this work, but just in case you want to you can try.
+Visual odometry is a technique that allows us to track the camera's position relative to its previous location. This was essential for a fully fixed camera solution, which requires tracking the camera's movement. Although I couldn't get it to work, you can give it a try if needed.
 
 ```py title="camera_pos_vo.py" linenums="1"
 

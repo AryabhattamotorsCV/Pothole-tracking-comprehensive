@@ -1,11 +1,11 @@
 # Code used for debugging
 
-When implementing a system like this, there will be a lot of errors. I will be explaining code I used to solve those problems.
+When developing a system like this, encountering errors is common. I will explain the code I used to resolve these issues.
 
 
-## Code used to find the index of the camera
+## Script to find the index of the camera
 
-When using multiple cameras knowing the index of the camera is important, to know this we run loops and detect the index at which the camera is available.
+When working with multiple cameras, it's crucial to identify the camera index. To do this, we use loops to detect the index where the camera is available.
 
 ```py title="camera_index_finder.py" linenums="1"
 
@@ -21,9 +21,9 @@ for i in range(0, cams_test):
  The code is self explanatory.
 
 
-## Code used to test the servo motors
+## Code utilized to test the functionality of the servo motors.
 
-When implementing the system we need to bring the servo motors to a particular position and we also need to check if the motor works before running the main code, we use code given below to do that.
+When setting up the system, it's important to position the servo motors correctly and verify their functionality before running the main code. The following code is used for this purpose.
 
 ```py title="Pyfirmata_test_code_motor_running.py" linenums="1"
 
@@ -56,7 +56,7 @@ The library pyfirmata is used here to rotate the servo motor.
 
 ## Undistorting the camera video stream
 
-Camera have some inherent distortion and to fix this we need to undistort the image. Though I didn't use this feature in my system, It might be useful in case you need to use it.
+Cameras often introduce distortion in the image, and to correct this, the image needs to be undistorted. While I didn't utilize this feature in my system, it could be helpful if you need it.
 
 ```py title="" linenums="1"
 
@@ -103,9 +103,9 @@ cap.release()
 cv2.destroyAllWindows()
 ```
 
-## Code to check if the model is readable
+## Script to check if the model is readable
 
-When running code in one of the office laptops I faced an issue of model path being read as null, Below I have given code to see if the model path is readable or not.
+While running code on one of the office laptops, I encountered an issue where the model path was being read as null. Below is the code to check whether the model path is readable.
 
 ```py title="model_path_checker.py" linenums="1"
 

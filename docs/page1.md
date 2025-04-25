@@ -1,8 +1,7 @@
-# Scripts used in the project to test different versions of the model
-From now I will be listing all the code one by one with explaination written for the testing of the system in a lab environment.
-Keep in mind the titles are the file name of the scripts.
+# Overview of Model Testing Scripts for Lab Evaluation
+This section documents the scripts used to evaluate different versions of the object detection models in a controlled lab environment. Each script is listed individually, along with a brief explanation of its role in the testing process. The titles provided correspond directly to the filenames of the scripts for easy reference.
 
-## Code to run the model using the native yolo library
+## Script for executing the model using the native YOLO library.
 
 ``` py linenums="1" title="yolo_object_detection_YOLOLIB.py"
 import cv2
@@ -68,9 +67,9 @@ cv2.destroyAllWindows()
 # Print average inference time
 print("Average inference time per frame:", sum(arr) / len(arr))
 ```
-The above code runs a yolo model regardless of the version and runs inference on the extracted image frame, the extraction of frames from the camera or a videostream is done using opencv. It also calculates inference time for every image, the inverse of this value will give you the fps. 
+The script above executes a YOLO model—irrespective of its version—and performs inference on each extracted image frame. Frame extraction, whether from a live camera feed or video stream, is handled using OpenCV. Additionally, the script measures the inference time for every frame; taking the inverse of this value provides the frames per second (FPS).
 
-## Code to run the yolo model using the opencv dnn module
+## Script for executing the YOLO model using OpenCV's DNN module.
 
 ``` py linenums="1" title="yolo_object_detection_OPENCV.py"
 import cv2
@@ -135,7 +134,7 @@ while cap.isOpened():
 cap.release()
 cv2.destroyAllWindows()
 ```
-This code is very similar to the code given above this one, it uses a different version of the model that is to say the yolo model is converted to an onnx model and then converted to a tensorflow frozen graph format (which is `.pb`) this model is made to run inference using opencv. The reason all of this is done is to benchmark the performance of the model in different formats so that the best one can be used.  
+This script closely resembles the one mentioned above, but it utilizes a different version of the model. Specifically, the YOLO model is first converted to ONNX format and then to a TensorFlow frozen graph (.pb file). Inference is performed using OpenCV. The purpose of these conversions is to benchmark the model’s performance across various formats to identify the most efficient one.
 ## Code to run the onnx format of the model
 
 ``` py linenums="1" title="yolo_object_detection_onnx.py"
@@ -190,10 +189,9 @@ cv2.destroyAllWindows()
 ```
 The above code runs inference using the onnx model, for all the reasons mentioned above.
 
-## Code used to run a tflite SSD model using mediapipe
+## Script for executing an SSD model in TFLite format using the Mediapipe framework.
 
-Mediapipe is a tool which can run the SSD model, even though SSD runs faster than YOLO, it is way less accurate. Use this code in case you need to test SSD models. Also keep in mind all the models are available in the `/scripts/models` path.
-
+Mediapipe is a framework capable of running SSD models. While SSD offers faster performance compared to YOLO, it falls significantly short in terms of accuracy. Use this script if you need to evaluate SSD models. Note that all model files can be found in the /scripts/models directory.
 ```py title="tflite_mediapipe_detections.py" linenums="1"
 
 import cv2

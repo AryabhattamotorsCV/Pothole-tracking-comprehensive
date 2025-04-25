@@ -1,8 +1,8 @@
-# Code used to export the model into different formats
+# Script for exporting the model into various formats.
 
-Below i will be listing the code used in the project to export the model in different formats, when we train a yolo model we get it in a `.pt` format which is a native pytorch format of the model.
+The following section outlines the code used to export the trained model into various formats. By default, training a YOLO model produces a `.pt` file, which is the native PyTorch format.
 
-## Code used to export the model to onnx
+## Script for converting the model to the ONNX format.
 
 ``` py title="onnx_converter.py" linenums="1"
 from ultralytics import YOLO
@@ -29,11 +29,11 @@ model.export(format="openvino")
 
 ```
 
-The above code is used to export the yolo model into the openvino format which is a quantised version of the model.
+The above script is used to convert the YOLO model into the OpenVINO format, which is a quantized version of the model.
 
-## Code used to export the model in tensorrt format
+## Script for exporting the model to the TensorRT format.
 
-Tensorrt is an optimization library, it can be used to increase the inference speed, there are a few other reason why it is helpful but I will not dive into them here.
+TensorRT is an optimization library designed to enhance inference speed. While it offers several other benefits, I won't go into those details here.
 
 ```py title="yolov8_tensorrt.py" linenums="1"
 

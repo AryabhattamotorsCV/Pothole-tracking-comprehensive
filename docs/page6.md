@@ -1,6 +1,6 @@
-# Code for sensors used in testing
+# Code for utilizing sensors during testing
 
-In this section I will be explaining code used to test out different sensors, even though these sensor's work with ARDUINO code, there are ways to make it interact with python code using frameworks like pyserial and pyfirmata.
+In this section, I will explain the code used to test various sensors. While these sensors are typically operated with ARDUINO code, they can also be interfaced with Python using frameworks such as pyserial and pyfirmata.
 
 # Accelerometer code
 
@@ -55,6 +55,5 @@ while True:
     except Exception as e:
         print("Error:", e)
 ```        
-
-Keep in mind even though this method should work on paper it doesn't in real world scenarios, I am just adding this code just in case someone might need it to do a few tests.
+Although this method should theoretically work, it may not perform as expected in real-world situations. I'm including this code in case anyone finds it useful for conducting some tests.
 

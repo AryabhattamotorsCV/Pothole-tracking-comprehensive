@@ -1,10 +1,10 @@
-# Code used to implement and test the perspective transform
+# Code used to implement and evaluate the perspective transformation
 
-In this section I will be explaining the code used to find and test the perspective transform.
+In this section, I will explain the code used to detect and test the perspective transformation.
 
-## Code used to find the coordinates of the corner of the flat surface
+## Code used to determine the coordinates of the corners of the flat surface.
 
-The below code is used to find the corner coordinates of a flat rectangular surface, this is done in order to apply perspective transform properly onto a flat surface when calculating the coordinates of the pothole. It also has parts which apply perspetive transform but they can be ignored here because this code can also be used to check the perspective transform.
+The following code is used to identify the corner coordinates of a flat rectangular surface. This step is crucial for accurately applying the perspective transform to the surface when calculating the pothole coordinates. The code also includes sections for applying the perspective transform, but these can be disregarded here, as the code can also be used to verify the perspective transform.
 
 ```py title="Perspective_transform_coord_finder.py" linenums="1"
 import cv2 
@@ -70,11 +70,11 @@ cap.release()
 cv2.destroyAllWindows()
 
 ```
-The above code takes mouse clicks and prints the pixel coordinate of the location where the click was made, this helps in knowing the pixel coordinates of the corner just by clicking the mouse onto those corners in the camera image.
+The code above captures mouse clicks and displays the pixel coordinates of the clicked locations. This allows us to easily identify the pixel coordinates of the corners by simply clicking on them in the camera image.
 
-## Code used to implement a dynamic perspective transform
+## Code used to apply a dynamic perspective transformation
 
-This code implements a system where the four corners of a rectangular region are identified and a perspective transform is applied on to that.
+This code establishes a system that identifies the four corners of a rectangular area and applies a perspective transformation to it.
 
 ```py title="Dynamic_perspective_transform_rect.py" linenums="1"
 
@@ -132,6 +132,4 @@ while cap.isOpened():
     cv2.destroyAllWindows()
 ```
 
-The above code is used to find a rectangular region defined by black tapes, After that the rectangular region is found using contour detection, there are technical reasons as to why this was done.
-
-##
+The code above is used to identify a rectangular area marked by black tapes. The region is then detected using contour detection, which was done for specific technical reasons.

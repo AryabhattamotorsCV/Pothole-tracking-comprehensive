@@ -1,8 +1,8 @@
 # Code used to implement the math for the system
 
-This section contains the code used to implement the mathematical side of the project. I will not go into the proof's of the mathematics used here since that was covered elsewhere.
+This section includes the code used to implement the mathematical aspects of the project. I won't delve into the proofs of the mathematics here, as that has been addressed separately.
 
-## Code used to implement the tangent plane and circle point finder
+## Code used to implement the tangent plane and determine the circle's points
 
 ```py title="Equation_solver_tangent_plane.py" linenums="1"
 
@@ -39,11 +39,11 @@ tangent_point_finder(x, y, 33.1)
 
 ```
 
-The above code uses a library called sympy which helps in solving equations with algebraic representation.
+The above code utilizes a library called sympy, which assists in solving equations through algebraic representations.
 
-## Closed form solution code
+## Code for the closed-form solution
 
-The code given below uses a closed form solution for finding the coordinates.
+The following code utilizes a closed-form solution to determine the coordinates.
 
 ```py title="Equation_solver_closed_form.py" linenums="1"
 
@@ -80,4 +80,4 @@ def tangent_point_finder(x0, y0, R):
         print(f"inference time: {inference_time}")
         return [x_t, y_t]
 ```
-Having a closed form solution make's the coordinate finding more faster.
+Using a closed-form solution makes the process of finding coordinates faster.

@@ -1,6 +1,5 @@
-# Code used to do camera calibration
-
-Even though the documentation's aim is to explain the code and it's functionality, I wil briefly go through what camera calibration means and it's uses, camera calibration is done to calculate the intrinsic matrix, distortion matrix and a few other parameters, the intrinsic matrix helps us in finding the homography matrix which in turn helps us convert pixel coordinates into real world coordinates.
+# Script used for camera calibration
+Although the primary goal of this documentation is to explain the code and its functionality, I will briefly cover the concept of camera calibration and its uses. Camera calibration is performed to determine the intrinsic matrix, distortion matrix, and several other parameters. The intrinsic matrix is essential for calculating the homography matrix, which, in turn, enables the conversion of pixel coordinates into real-world coordinates.
 
 ```py title="Camera_calibration.py" linenums="1"
 
